@@ -18,7 +18,7 @@ type passwordReducerState = {
 type Action = | { type: 'INPUT_BLUR' } | { type: 'USER_INPUT', value: string };
 
 
-const emailReducer = (prevState: emailReducerState, action: any) => {
+const emailReducer = (prevState: emailReducerState, action: Action): emailReducerState => {
   if(action.type === 'USER_INPUT') {
     return {
       value: action.value,
@@ -36,7 +36,7 @@ const emailReducer = (prevState: emailReducerState, action: any) => {
     isValid: false
   }
 }
-const passwordReducer = (prevState: passwordReducerState, action: Action) => {
+const passwordReducer = (prevState: passwordReducerState, action: Action):passwordReducerState => {
   if(action.type === 'USER_INPUT') {
     return {
       value: action.value,
@@ -57,29 +57,10 @@ const passwordReducer = (prevState: passwordReducerState, action: Action) => {
 
 
 const Login = (props: LoginProps) => {
-  // const [inputEmail, setInputEmail] = useState("");
-  // const [emailIsValid, setEmailIsValid] = useState<boolean | null>(null);
-  // const [inputPassword, setInputPassword] = useState("");
-  // const [passwordIsValid, setPasswordIsValid] = useState<boolean | null>(null);
-  const [formIsValid, setFormIsValid] = useState(false);
+const [formIsValid, setFormIsValid] = useState(false);
+const [passwordState, dispatchPasswordState] = useReducer(passwordReducer, {value: '', isValid: true});
+const [emailState, dispatchEmailState] = useReducer(emailReducer, {value: '', isValid: true});
 
-  const [passwordState, dispatchPasswordState] = useReducer(passwordReducer, {value: '', isValid: true});
-  const [emailState, dispatchEmailState] = useReducer(emailReducer, {value: '', isValid: undefined});
-  // useEffect(()=> {
-  //   console.log('Зашeл в useEffect');
-
-  //   const timer = setTimeout(()=> {
-  //     console.log('Effect function');
-  //   setFormIsValid(
-  //     inputEmail.includes("@") && inputPassword.trim().length > 7
-  //   );
-  //   }, 1000)
-  //   return ()=> {
-  //     console.log('Cleaning');
-  //     clearTimeout(timer);
-  //   }
-
-  // }, [inputEmail, inputPassword]);
  const emailChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatchEmailState({type: 'USER_INPUT', value: event.target.value})
     setFormIsValid(
